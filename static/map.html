@@ -1,0 +1,156 @@
+
+        <!DOCTYPE html>
+        <head>
+            
+        
+            <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster-src.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.Default.css" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.css" />
+            <link rel="stylesheet" href="https://raw.githubusercontent.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css" />
+        
+           
+            <style>
+
+            DIV#log {
+  margin: 10px auto;
+  width: 600px;
+  height: 200px;
+  background: gainsboro;
+  padding: 5px;
+  overflow-y: scroll;
+}
+
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                }
+
+            #map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+            
+        
+            
+            <style> #map_aed163e2d3c4453f8287c4af7a9e7002 {
+                position : relative;
+                width : 800px;
+                height: 600px;
+                left: 0.0%;
+                top: 0.0%;
+                }
+            </style>
+
+
+        
+<script type="text/javascript">
+
+  window.onload = function setDataSource() {
+    if (!!window.EventSource) {
+      var source = new EventSource("http://localhost:5000/tweets?callback=loomit");
+
+      source.addEventListener("message", function(e) {
+        updatePrice(e.data);
+        logMessage(e);
+      }, false);
+      
+      source.addEventListener("open", function(e) {
+        logMessage("OPENED");
+      }, false);
+
+      source.addEventListener("error", function(e) {
+        logMessage("ERROR - BUUUU");
+        if (e.readyState == EventSource.CLOSED) {
+          logMessage("CLOSED");
+        }
+      }, false);
+    } else {
+      document.getElementById("notSupported").style.display = "block";
+    }
+  }
+
+  function updatePrice(data) {
+    var ar = data.split(",");
+    var lat = parseFloat(ar[0]);
+    var lng = parseFloat(ar[1]);
+    var tweet = ar[2];
+    var marker_06ca45a54f274a089569f2011c3e3158 = L.marker([lat,lng],
+                {icon: new L.Icon.Default()}).addTo(map_aed163e2d3c4453f8287c4af7a9e7002);
+    var popup_test = L.popup({maxWidth: '300'});
+    var html_test = $('  <div id="html_test"        style="width: 100.0%; height: 100.0%;">      '+tweet+'</div>  ')[0];
+    popup_test.setContent(html_test);
+    marker_06ca45a54f274a089569f2011c3e3158.bindPopup(popup_test);
+
+  }
+
+  function logMessage(obj) {
+    var el = document.getElementById("log");
+    if (typeof obj === "string") {
+      el.innerHTML += obj + "<br>";
+    } else {
+      el.innerHTML += obj.data + "<br>";
+    }
+    el.scrollTop += 20;
+  }
+
+</script>
+ </head>
+
+        <body>
+            
+        
+            
+            <div class="folium-map" id="map_aed163e2d3c4453f8287c4af7a9e7002" ></div>
+            <h2>Simple Log Console</h2>
+            <p class="hint">
+            This is simple log console. It is useful for testing purposes and to understand better how SSE works.
+            Event id and data are logged for each event.
+            </p>
+            <div id="log">
+            </div>
+        
+        
+        
+        </body>
+
+        <script>
+            var southWest = L.latLng(-90, -180);
+            var northEast = L.latLng(90, 180);
+            var bounds = L.latLngBounds(southWest, northEast);
+
+            var map_aed163e2d3c4453f8287c4af7a9e7002 = L.map('map_aed163e2d3c4453f8287c4af7a9e7002', {
+                                           center:[43.665,-79.355],
+                                           zoom: 12,
+                                           maxBounds: bounds,
+                                           layers: [],
+                                           crs: L.CRS.EPSG3857
+                                         });
+              
+            var tile_layer_8fa790ade2b142c2bbe9b22ab5a60158 = L.tileLayer(
+                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                {
+                    maxZoom: 18,
+                    minZoom: 1,
+                    attribution: 'Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
+                    detectRetina: true
+                    }
+                ).addTo(map_aed163e2d3c4453f8287c4af7a9e7002);        
+        
+        </script>
