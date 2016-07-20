@@ -25,9 +25,7 @@ def create_tables():
     conn = sqlite3.connect("geodata.db")
 
     with conn:
-        # select a dictionary cursor
-        # conn.row_factory = sqlite3.Row
-        
+
         cursor = conn.cursor()
 
         # table for the twitter entries is created if it not exists

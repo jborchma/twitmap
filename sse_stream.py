@@ -1,4 +1,3 @@
-import folium
 import sqlite3
 import pandas as pd
 import time
@@ -15,10 +14,6 @@ from flask import Response
 
 # one can find the map under http://localhost:5000/static/map.html
 
-bbox = [43.5,-79.56,43.83,-79.15]
-map_osm = folium.Map(location=[43.665,-79.355],zoom_start=12)
-#map_osm.fit_bounds(bbox)
-
 conn = sqlite3.connect("geodata.db")
 cursor = conn.cursor()
 
@@ -26,21 +21,14 @@ def signal_handler(signal, frame):
     print('You pressed Ctrl+C!')
     sys.exit(0)
 
-# cursor.execute(""" SELECT location FROM events WHERE location NOT LIKE '%79.%' """)
-# print(cursor.fetchall())
 def sql_tail():
     number_of_points_old = 0
     while True:
         conn = sqlite3.connect("geodata.db")
         cursor = conn.cursor()
-        #map_osm = folium.Map(location=[43.665,-79.355],zoom_start=12)
         cursor.execute(""" SELECT location, service, tweet FROM eventsTemp """)
         data = pd.DataFrame( cursor.fetchall(),columns=['location','service','tweet'])
         number_of_points = data.shape[0]
-
-        #m = folium.Marker(location=[43.665,-79.355], popup='test',icon=folium.Icon(color='blue',icon='cloud'))
-
-        #map_osm.add_children(m)
 
 
         # for i in range(number_of_points_old): #data.shape[0]
@@ -65,7 +53,6 @@ def sql_tail():
             yield "data: " + str(loc[0]) + "," + str(loc[1]) + "," + str(tweet) + "\n\n"
 
         number_of_points_old = number_of_points
-        #map_osm.save('test.html')
         print('##### Refreshed #####')
         time.sleep(5)
 
